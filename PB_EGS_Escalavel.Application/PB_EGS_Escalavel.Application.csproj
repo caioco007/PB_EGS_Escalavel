@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PB_EGS_Escalavel.Core\PB_EGS_Escalavel.Core.csproj" />
+    <ProjectReference Include="..\PB_EGS_Escalavel.Infraestructure\PB_EGS_Escalavel.Infraestructure.csproj" />
+  </ItemGroup>
+
+</Project>

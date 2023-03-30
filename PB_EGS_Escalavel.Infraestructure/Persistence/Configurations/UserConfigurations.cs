@@ -10,6 +10,21 @@ namespace PB_EGS_Escalavel.Infrastructure.Persistence.Configurations
         {
             builder
                 .HasKey(p => p.Id);
+
+            builder
+                .Property(p => p.BirthDate)
+                .HasColumnType("datetime");
+
+            builder
+                .Property(p => p.CreatedAt)
+                .HasColumnType("datetime")
+                .HasDefaultValueSql("GETDATE()");
+
+            builder
+                .HasMany(u => u.StudentCourses)
+                .WithOne()
+                .HasForeignKey(p => p.IdCourse)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

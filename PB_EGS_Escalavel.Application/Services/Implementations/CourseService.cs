@@ -22,7 +22,7 @@ namespace PB_EGS_Escalavel.Application.Services.Implementations
             _courseRepository = courseRepository;
         }
 
-        public async Task<int> Create(NewCourseInputModel inputModel)
+        public async Task<int> CreateAsync(NewCourseInputModel inputModel)
         {
             var course = new Course(inputModel.Title, inputModel.Description, inputModel.IdTeacher, inputModel.TotalHours);
 
@@ -31,14 +31,14 @@ namespace PB_EGS_Escalavel.Application.Services.Implementations
             return course.Id;
         }
 
-        public async Task AddStudentCourse(NewStudentCourseInputModel inputModel)
+        public async Task AddStudentCourseAsync(NewStudentCourseInputModel inputModel)
         {
             var userCourse = new UserCourse(inputModel.IdUser, inputModel.IdCourse);
 
             await _courseRepository.AddStudentToCourseAsync(userCourse);
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             //var course = _dbContext.Courses.SingleOrDefault(c => c.Id == id);
 
@@ -46,7 +46,7 @@ namespace PB_EGS_Escalavel.Application.Services.Implementations
             //_dbContext.SaveChanges();
         }
 
-        public async Task<List<CourseViewModel>> GetAll(string query)
+        public async Task<List<CourseViewModel>> GetAllAsync(string query)
         {
             var courses = await _courseRepository.GetAllAsync();
 
@@ -55,9 +55,9 @@ namespace PB_EGS_Escalavel.Application.Services.Implementations
             return coursesViewModel;
         }
 
-        public async Task<CourseDetailsViewModel> GetById(int id)
+        public async Task<CourseDetailsViewModel> GetByIdAsync(int id)
         {
-            var course = await _courseRepository.GetByIdAsync(id);
+            var course = await _courseRepository.GetDetailsByIdAsync(id);
 
             if (course == null) return null;
 
@@ -72,7 +72,7 @@ namespace PB_EGS_Escalavel.Application.Services.Implementations
             return courseDetailsViewModel;
         }
 
-        public async Task Update(UpdateCourseInputModel inputModel)
+        public async Task UpdateAsync(UpdateCourseInputModel inputModel)
         {
             var course = await _courseRepository.GetByIdAsync(inputModel.Id);
 

@@ -25,5 +25,7 @@ namespace PB_EGS_Escalavel.Infraestructure.Persistence.Repositories
         }
 
         public async Task<User> GetByIdAsync(int id) => await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id);
+
+        public async Task<User> GetUserByEmailAndPasswordAsync(string email, string passwordHash) => await _dbContext.Users.SingleOrDefaultAsync(u => u.Email == email && u.Password == passwordHash);
     }
 }

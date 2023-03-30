@@ -16,6 +16,11 @@ namespace PB_EGS_Escalavel.Infrastructure.Persistence.Configurations
                 .HasColumnType("decimal");
 
             builder
+                .Property(p => p.CreatedAt)
+                .HasColumnType("datetime")
+                .HasDefaultValueSql("GETDATE()");
+
+            builder
                 .HasOne(p => p.Teacher)
                 .WithMany(f => f.TeacherCourses)
                 .HasForeignKey(p => p.IdTeacher)

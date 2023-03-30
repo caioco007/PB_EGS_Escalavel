@@ -9,27 +9,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PB_EGS_Escalavel.Core.Repositories;
+using PB_EGS_Escalavel.Core.Auth;
 
 namespace PB_EGS_Escalavel.Application.Services.Implementations
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly IAuthService _authService;
+
+        public UserService(IUserRepository userRepository, IAuthService authService)
         {
             _userRepository = userRepository;
+            _authService = authService;
         }
 
-        public async Task<int> Create(NewUserInputModel inputModel)
+        public async Task<int> CreateAsync(NewUserInputModel inputModel)
         {
-            var user = new User(inputModel.FullName, inputModel.Email, inputModel.BirthDate);
+            var passwordHash = _authService.ComputeSha256Hash(inputModel.Password);
+            var user = new User(inputModel.FullName, inputModel.Email, inputModel.BirthDate, passwordHash, inputModel.Role);
 
             await _userRepository.AddAsync(user);
 
             return user.Id;
         }
 
-        public async Task<UserViewModel> GetUser(int id)
+        public async Task<UserViewModel> GetUserAsync(int id)
         {
             var user = await _userRepository.GetByIdAsync(id);
 

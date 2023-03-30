@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PB_EGS_Escalavel.API.Models;
 using PB_EGS_Escalavel.Application.InputModels;
 using PB_EGS_Escalavel.Application.Services.Interfaces;
 
@@ -12,16 +11,18 @@ namespace PB_EGS_Escalavel.API.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
-        public UsersController(IUserService userService)
+        private readonly IAccountService _accountService;
+        public UsersController(IUserService userService, IAccountService accountService)
         {
             _userService = userService;
+            _accountService = accountService;
         }
 
         // api/users/1
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var user = _userService.GetUser(id);
+            var user = await _userService.GetUserAsync(id);
 
             if (user == null)
             {
@@ -33,20 +34,24 @@ namespace PB_EGS_Escalavel.API.Controllers
 
         // api/users
         [HttpPost]
-        public IActionResult Post([FromBody] NewUserInputModel inputModel)
+        [AllowAnonymous]
+        public async Task<IActionResult> Post([FromBody] NewUserInputModel inputModel)
         {
-            var id = _userService.Create(inputModel);
+            var id = await _userService.CreateAsync(inputModel);
 
             return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
         }
 
         // api/users/1/login
-        [HttpPut("{id}/login")]
-        public IActionResult Login(int id, [FromBody] LoginModel login)
+        [HttpPut("login")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody] LoginUserInputModel inputModel)
         {
-            // TODO: Para Módulo de Autenticação e Autorização
+            var loginUserViewModel = await _accountService.Login(inputModel);
 
-            return NoContent();
+            if (loginUserViewModel == null) return BadRequest();
+
+            return Ok(loginUserViewModel);
         }
     }
 }

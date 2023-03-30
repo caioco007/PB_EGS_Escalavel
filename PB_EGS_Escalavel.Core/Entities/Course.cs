@@ -12,7 +12,6 @@ namespace PB_EGS_Escalavel.Core.Entities
             TotalHours = totalHours;
 
             CreatedAt = DateTime.Now;
-            Students = new List<UserCourse>();
         }
 
         public string Title { get; private set; }
@@ -22,7 +21,6 @@ namespace PB_EGS_Escalavel.Core.Entities
         public decimal TotalHours { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
-        public List<UserCourse> Students { get; private set; }
 
         public void Update(string title, string description, decimal totalHours)
         {

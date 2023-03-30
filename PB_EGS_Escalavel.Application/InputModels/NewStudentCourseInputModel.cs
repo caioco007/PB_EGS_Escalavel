@@ -8,7 +8,7 @@ namespace PB_EGS_Escalavel.Application.InputModels
 {
     public class NewStudentCourseInputModel
     {
-        public int IdCourse { get; private set; }
-        public int IdUser { get; private set; }
+        public int IdCourse { get; set; }
+        public int IdUser { get; set; }
     }
 }

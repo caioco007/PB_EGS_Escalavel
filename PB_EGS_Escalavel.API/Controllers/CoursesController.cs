@@ -18,18 +18,19 @@ namespace PB_EGS_Escalavel.API.Controllers
 
         // api/courses?query=net core
         [HttpGet]
-        public IActionResult Get(string query)
+        [Authorize(Roles = "teacher, student")]
+        public async Task<IActionResult> Get(string? query)
         {
-            var courses = _courseService.GetAll(query);
+            var courses = await _courseService.GetAllAsync(query);
 
             return Ok(courses);
         }
 
         // api/courses/2
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var course = _courseService.GetById(id);
+            var course = await _courseService.GetByIdAsync(id);
 
             if (course == null)
             {
@@ -40,48 +41,51 @@ namespace PB_EGS_Escalavel.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] NewCourseInputModel inputModel)
+        [Authorize(Roles = "teacher")]
+        public async Task<IActionResult> Post([FromBody] NewCourseInputModel inputModel)
         {
             if (inputModel.Title.Length > 50)
             {
                 return BadRequest();
             }
 
-            var id = _courseService.Create(inputModel);
+            var id = await _courseService.CreateAsync(inputModel);
 
             return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
         }
 
         // api/courses/2
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateCourseInputModel inputModel)
+        [Authorize(Roles = "teacher")]
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateCourseInputModel inputModel)
         {
             if (inputModel.Description.Length > 200)
             {
                 return BadRequest();
             }
 
-            _courseService.Update(inputModel);
+            await _courseService.UpdateAsync(inputModel);
 
-            return NoContent();
+            return Ok();
         }
 
         // api/courses/3 DELETE
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        [Authorize(Roles = "teacher")]
+        public async Task<IActionResult> Delete(int id)
         {
-            _courseService.Delete(id);
+            await _courseService.DeleteAsync(id);
 
-            return NoContent();
+            return Ok();
         }
 
-        // api/courses/1/students POST
-        [HttpPost("{id}/students")]
-        public IActionResult AddStudentToCourse(int id, [FromBody] NewStudentCourseInputModel inputModel)
+        [HttpPost("students")]
+        [Authorize(Roles = "student")]
+        public async Task<IActionResult> AddStudentToCourse([FromBody] NewStudentCourseInputModel inputModel)
         {
-            _courseService.AddStudentCourse(inputModel);
+            await _courseService.AddStudentCourseAsync(inputModel);
 
-            return NoContent();
+            return Ok();
         }
     }
 }

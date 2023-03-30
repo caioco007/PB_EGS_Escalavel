@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace PB_EGS_Escalavel.Application.Services.Interfaces
 {
-    public interface IUserService
+    public interface IAccountService
     {
-
-        Task<UserViewModel> GetUserAsync(int id);
-        Task<int> CreateAsync(NewUserInputModel inputModel);
+        Task<LoginUserViewModel> Login(LoginUserInputModel inputModel);
     }
 }

@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PB_EGS_Escalavel.Application", "PB_EGS_Escalavel.Application\PB_EGS_Escalavel.Application.csproj", "{ED25283A-FD1C-4DF8-9284-FF93D1A1BCD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PB_EGS_Escalavel.Application", "PB_EGS_Escalavel.Application\PB_EGS_Escalavel.Application.csproj", "{ED25283A-FD1C-4DF8-9284-FF93D1A1BCD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PB_EGS_Escalavel.Core", "PB_EGS_Escalavel.Core\PB_EGS_Escalavel.Core.csproj", "{D052026B-1CAA-4CA1-838F-F1F1F1A3973D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PB_EGS_Escalavel.Core", "PB_EGS_Escalavel.Core\PB_EGS_Escalavel.Core.csproj", "{D052026B-1CAA-4CA1-838F-F1F1F1A3973D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PB_EGS_Escalavel.Infraestructure", "PB_EGS_Escalavel.Infraestructure\PB_EGS_Escalavel.Infraestructure.csproj", "{0A9566FE-5A31-42CC-8A92-CB169E75902E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PB_EGS_Escalavel.Infraestructure", "PB_EGS_Escalavel.Infraestructure\PB_EGS_Escalavel.Infraestructure.csproj", "{0A9566FE-5A31-42CC-8A92-CB169E75902E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PB_EGS_Escalavel.API", "PB_EGS_Escalavel.API\PB_EGS_Escalavel.API.csproj", "{B74DD7D4-2FB4-4472-99C6-12FB0AD752F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PB_EGS_Escalavel.API", "PB_EGS_Escalavel.API\PB_EGS_Escalavel.API.csproj", "{B74DD7D4-2FB4-4472-99C6-12FB0AD752F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PB_EGS_Escalavel.UnitTeste", "PB_EGS_Escalavel.UnitTeste\PB_EGS_Escalavel.UnitTeste.csproj", "{255FC4AF-53C8-4D6D-9099-4127A22453A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{B74DD7D4-2FB4-4472-99C6-12FB0AD752F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B74DD7D4-2FB4-4472-99C6-12FB0AD752F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B74DD7D4-2FB4-4472-99C6-12FB0AD752F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{255FC4AF-53C8-4D6D-9099-4127A22453A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{255FC4AF-53C8-4D6D-9099-4127A22453A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{255FC4AF-53C8-4D6D-9099-4127A22453A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{255FC4AF-53C8-4D6D-9099-4127A22453A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

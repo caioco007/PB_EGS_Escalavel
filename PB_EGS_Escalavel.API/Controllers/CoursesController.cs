@@ -66,7 +66,7 @@ namespace PB_EGS_Escalavel.API.Controllers
 
             await _courseService.UpdateAsync(inputModel);
 
-            return Ok();
+            return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
         }
 
         // api/courses/3 DELETE

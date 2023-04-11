@@ -31,22 +31,26 @@ namespace PB_EGS_Escalavel.Application.Services.Implementations
             return course.Id;
         }
 
-        public async Task AddStudentCourseAsync(NewStudentCourseInputModel inputModel)
+        public async Task<bool> AddStudentCourseAsync(NewStudentCourseInputModel inputModel)
         {
             var userCourse = new UserCourse(inputModel.IdUser, inputModel.IdCourse);
 
             await _courseRepository.AddStudentToCourseAsync(userCourse);
+            return true;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id, int userId)
         {
-            //var course = _dbContext.Courses.SingleOrDefault(c => c.Id == id);
+            var courses = await _courseRepository.GetAllAsync();
+            if (!courses.Any(x => x.Id == id && x.IdTeacher == userId)) return false;
 
-            //_dbContext.Remove(course);
-            //_dbContext.SaveChanges();
+            if (await _courseRepository.CountStudentByCourseAsync(id) > 0) return false;
+
+            await _courseRepository.DeleteAsync(id);
+            return true;
         }
 
-        public async Task<List<CourseViewModel>> GetAllAsync(string query)
+        public async Task<List<CourseViewModel>> GetAllAsync()
         {
             var courses = await _courseRepository.GetAllAsync();
 
@@ -72,13 +76,20 @@ namespace PB_EGS_Escalavel.Application.Services.Implementations
             return courseDetailsViewModel;
         }
 
-        public async Task UpdateAsync(UpdateCourseInputModel inputModel)
+        public async Task<bool> UpdateAsync(UpdateCourseInputModel inputModel, int userId)
         {
+            var courses = await _courseRepository.GetAllAsync();
+            if (!courses.Any(x => x.Id == inputModel.Id && x.IdTeacher == userId)) return false;
+
+            if (await _courseRepository.CountStudentByCourseAsync(inputModel.Id) == 0) return false;
+
             var course = await _courseRepository.GetByIdAsync(inputModel.Id);
+            if (course == null) return false;
 
             course.Update(inputModel.Title, inputModel.Description, inputModel.TotalHours);
 
             await _courseRepository.SaveChangesAsync();
+            return true;
         }
     }
 }

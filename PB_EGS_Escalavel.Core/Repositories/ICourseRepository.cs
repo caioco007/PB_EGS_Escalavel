@@ -9,6 +9,8 @@ namespace PB_EGS_Escalavel.Core.Repositories
         Task<Course> GetByIdAsync(int id);
         Task AddAsync(Course course);
         Task AddStudentToCourseAsync(UserCourse userCourse);
+        Task<int> CountStudentByCourseAsync(int courseId);
         Task SaveChangesAsync();
+        Task DeleteAsync(int id);
     }
 }

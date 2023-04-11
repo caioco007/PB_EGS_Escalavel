@@ -25,15 +25,28 @@ namespace PB_EGS_Escalavel.Infraestructure.Persistence.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<Course>> GetAllAsync() => await _dbContext.Courses.ToListAsync();
+        public async Task<int> CountStudentByCourseAsync(int courseId)
+        {
+            return await _dbContext.UserCourses.Where(x => x.IdCourse == courseId).CountAsync();
+        }
 
-        public async Task<Course> GetByIdAsync(int id) => await _dbContext.Courses.SingleOrDefaultAsync(p => p.Id == id);
+        public async Task DeleteAsync(int id)
+        {
+            var course = _dbContext.Courses.SingleOrDefault(c => c.Id == id);
+            course.Inactive();
+
+            _dbContext.SaveChanges();
+        }
+
+        public async Task<List<Course>> GetAllAsync() => await _dbContext.Courses.Where(x => x.Active).ToListAsync();
+
+        public async Task<Course> GetByIdAsync(int id) => await _dbContext.Courses.SingleOrDefaultAsync(p => p.Id == id && p.Active);
 
         public async Task<Course> GetDetailsByIdAsync(int id)
         {
             return await _dbContext.Courses
                 .Include(p => p.Teacher)
-                .SingleOrDefaultAsync(p => p.Id == id);
+                .SingleOrDefaultAsync(p => p.Id == id && p.Active);
         }
 
         public async Task SaveChangesAsync()

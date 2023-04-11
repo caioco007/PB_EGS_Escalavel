@@ -12,6 +12,7 @@ namespace PB_EGS_Escalavel.Core.Entities
             TotalHours = totalHours;
 
             CreatedAt = DateTime.Now;
+            Active = true;
         }
 
         public string Title { get; private set; }
@@ -20,6 +21,7 @@ namespace PB_EGS_Escalavel.Core.Entities
         public User Teacher { get; private set; }
         public decimal TotalHours { get; private set; }
         public DateTime CreatedAt { get; private set; }
+        public bool Active { get; private set; }
 
 
         public void Update(string title, string description, decimal totalHours)
@@ -27,6 +29,11 @@ namespace PB_EGS_Escalavel.Core.Entities
             Title = title;
             Description = description;
             TotalHours = totalHours;
+        }
+
+        public void Inactive()
+        {
+            Active = false;
         }
     }
 }

@@ -10,11 +10,11 @@ namespace PB_EGS_Escalavel.Application.Services.Interfaces
 {
     public interface ICourseService
     {
-        Task<List<CourseViewModel>> GetAllAsync(string query);
+        Task<List<CourseViewModel>> GetAllAsync();
         Task<CourseDetailsViewModel> GetByIdAsync(int id);
         Task<int> CreateAsync(NewCourseInputModel inputModel);
-        Task UpdateAsync(UpdateCourseInputModel inputModel);
-        Task DeleteAsync(int id);
-        Task AddStudentCourseAsync(NewStudentCourseInputModel inputModel);
+        Task<bool> UpdateAsync(UpdateCourseInputModel inputModel, int userId);
+        Task<bool> DeleteAsync(int id, int userId);
+        Task<bool> AddStudentCourseAsync(NewStudentCourseInputModel inputModel);
     }
 }

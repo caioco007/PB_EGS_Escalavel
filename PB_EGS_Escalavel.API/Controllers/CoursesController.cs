@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PB_EGS_Escalavel.Application.InputModels;
 using PB_EGS_Escalavel.Application.Services.Interfaces;
+using PB_EGS_Escalavel.Core.Entities;
 
 namespace PB_EGS_Escalavel.API.Controllers
 {
@@ -10,18 +12,20 @@ namespace PB_EGS_Escalavel.API.Controllers
     [ApiController]
     public class CoursesController : Controller
     {
+        private readonly IUserService _userService;
         private readonly ICourseService _courseService;
-        public CoursesController(ICourseService courseService)
+        public CoursesController(IUserService userService, ICourseService courseService)
         {
+            _userService = userService;
             _courseService = courseService;
         }
 
-        // api/courses?query=net core
+        // api/courses
         [HttpGet]
         [Authorize(Roles = "teacher, student")]
-        public async Task<IActionResult> Get(string? query)
+        public async Task<IActionResult> Get()
         {
-            var courses = await _courseService.GetAllAsync(query);
+            var courses = await _courseService.GetAllAsync();
 
             return Ok(courses);
         }
@@ -55,26 +59,26 @@ namespace PB_EGS_Escalavel.API.Controllers
         }
 
         // api/courses/2
-        [HttpPut("{id}")]
+        [HttpPut("{teacherId}")]
         [Authorize(Roles = "teacher")]
-        public async Task<IActionResult> Put(int id, [FromBody] UpdateCourseInputModel inputModel)
+        public async Task<IActionResult> Put(int teacherId, [FromBody] UpdateCourseInputModel inputModel)
         {
             if (inputModel.Description.Length > 200)
             {
                 return BadRequest();
             }
 
-            await _courseService.UpdateAsync(inputModel);
+            if (!await _courseService.UpdateAsync(inputModel, teacherId)) return NotFound();
 
-            return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
+            return CreatedAtAction(nameof(GetById), new { id = inputModel.Id }, inputModel);
         }
 
-        // api/courses/3 DELETE
-        [HttpDelete("{id}")]
+        // api/courses/3/1 DELETE
+        [HttpDelete("{id}/{teacherId}")]
         [Authorize(Roles = "teacher")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, int teacherId)
         {
-            await _courseService.DeleteAsync(id);
+            if(! await _courseService.DeleteAsync(id, teacherId)) return NotFound();
 
             return Ok();
         }
@@ -83,7 +87,7 @@ namespace PB_EGS_Escalavel.API.Controllers
         [Authorize(Roles = "student")]
         public async Task<IActionResult> AddStudentToCourse([FromBody] NewStudentCourseInputModel inputModel)
         {
-            await _courseService.AddStudentCourseAsync(inputModel);
+            if (!await _courseService.AddStudentCourseAsync(inputModel)) return NotFound();
 
             return Ok();
         }

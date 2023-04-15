@@ -15,11 +15,13 @@ namespace PB_EGS_Escalavel.UnitTeste.Application.Services
     {
         private readonly Mock<ICourseService> _courseServiceMock;
         private readonly Mock<ICourseRepository> _courseRepositoryMock;
+        private readonly Mock<IUserService> _userServiceMock;
 
         public CourseTest()
         {
             _courseServiceMock = new Mock<ICourseService>();
             _courseRepositoryMock = new Mock<ICourseRepository>();
+            _userServiceMock = new Mock<IUserService>();
         }
 
         [Fact]
@@ -47,7 +49,7 @@ namespace PB_EGS_Escalavel.UnitTeste.Application.Services
             //Act            
             _courseServiceMock.Setup(x => x.CreateAsync(It.IsAny<NewCourseInputModel>())).Returns(Task.FromResult(1));
 
-            var controller = new CoursesController(_courseServiceMock.Object);
+            var controller = new CoursesController(_userServiceMock.Object, _courseServiceMock.Object);
             var actual = controller.Post(newCourseInputModel);
 
             //Assert
@@ -66,6 +68,7 @@ namespace PB_EGS_Escalavel.UnitTeste.Application.Services
                 1,
                 "Teste title",
                 DateTime.Now
+
             );
 
             var courseDetailsViewModel = new CourseDetailsViewModel
@@ -82,7 +85,7 @@ namespace PB_EGS_Escalavel.UnitTeste.Application.Services
             //Act            
             _courseServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).Returns(Task.FromResult(courseDetailsViewModel));
 
-            var controller = new CoursesController(_courseServiceMock.Object);
+            var controller = new CoursesController(_userServiceMock.Object, _courseServiceMock.Object);
             var actual = controller.GetById(1);
             var actualResult = actual.Result as OkObjectResult;
 
@@ -119,10 +122,10 @@ namespace PB_EGS_Escalavel.UnitTeste.Application.Services
 
 
             //Act            
-            _courseServiceMock.Setup(x => x.GetAllAsync(It.IsAny<string>())).Returns(Task.FromResult(courseViewModelList));
+            _courseServiceMock.Setup(x => x.GetAllAsync()).Returns(Task.FromResult(courseViewModelList));
 
-            var controller = new CoursesController(_courseServiceMock.Object);
-            var actual = controller.Get("");
+            var controller = new CoursesController(_userServiceMock.Object, _courseServiceMock.Object);
+            var actual = controller.Get();
             var actualResult = actual.Result as OkObjectResult;
 
             //Assert
@@ -164,9 +167,9 @@ namespace PB_EGS_Escalavel.UnitTeste.Application.Services
             };
 
             //Act            
-            _courseServiceMock.Setup(x => x.UpdateAsync(It.IsAny<UpdateCourseInputModel>())).Returns(Task.FromResult(true));
+            _courseServiceMock.Setup(x => x.UpdateAsync(It.IsAny<UpdateCourseInputModel>(), It.IsAny<int>())).Returns(Task.FromResult(true));
 
-            var controller = new CoursesController(_courseServiceMock.Object);
+            var controller = new CoursesController(_userServiceMock.Object, _courseServiceMock.Object);
             var actual = controller.Put(1 , updateCourseInputModel);
 
             //Assert
@@ -196,7 +199,7 @@ namespace PB_EGS_Escalavel.UnitTeste.Application.Services
             //Act            
             _courseServiceMock.Setup(x => x.AddStudentCourseAsync(It.IsAny<NewStudentCourseInputModel>())).Returns(Task.FromResult(true));
 
-            var controller = new CoursesController(_courseServiceMock.Object);
+            var controller = new CoursesController(_userServiceMock.Object, _courseServiceMock.Object);
             var actual = controller.AddStudentToCourse(newCourseInputModel);
 
             //Assert
